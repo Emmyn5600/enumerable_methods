@@ -21,7 +21,7 @@ To get a local copy up and running follow these simple example steps.
 
 - cd into this Project directory
 
-- rspec spec/logic_testing.rb
+- rspec spec/enumerable.rb
 
 ### Prerequisites
 

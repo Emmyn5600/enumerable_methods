@@ -191,6 +191,5 @@ RSpec.describe Enumerable do
       end
       expect(biggest_word).to eql('Watermelon')
     end
-    
   end
 end

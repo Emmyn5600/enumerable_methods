@@ -28,6 +28,10 @@ describe Enumerable do
                            keys if value == 'banana'
                          end)
     end
+
+    it 'does not return a transformed array' do
+      expect(number_array.my_each { |n| n * 2 }).not_to eq([2, 4, 6, 8])
+    end
   end
 
   describe '#my_each_with_index' do
@@ -52,6 +56,10 @@ describe Enumerable do
                                                                                     hash if index == 1
                                                                                   end)
     end
+
+    it 'does not return a transformed array' do
+      expect(number_array.my_each_with_index { |n, index| n * 2 if index.even? }).not_to eq([2, 2, 6, 4])
+    end
   end
 
   describe '#my_select' do
@@ -65,6 +73,12 @@ describe Enumerable do
 
     it 'returns all the numbers divisible by 2' do
       expect(number_array.my_select { |number| number if number.even? }).to eq([2, 4])
+    end
+
+    it 'does not modify the original array or return the transformed array' do
+      test_array = [2, 4, 6, 8]
+      new_array = test_array.my_select { |n| n * 2 }
+      expect(new_array).to eq(test_array)
     end
   end
 
@@ -166,6 +180,10 @@ describe Enumerable do
     it 'returns the counted elements that same as the passing parameters' do
       expect(%w[microverse microverse freecodecamp codeacademy].my_count('microverse')).to eql(2)
     end
+
+    it 'does not return the original array if used without a block' do
+      expect(array.my_count).not_to eq(array)
+    end
   end
 
   describe '#my_map' do
@@ -182,6 +200,12 @@ describe Enumerable do
       to_expect = ['Big Cat', 'Big Dog', 'Big Bird']
       expect(animal.map { |animals| animals.gsub('Small', 'Big') }).to eq(to_expect)
     end
+
+    it 'does not change the initial array' do
+      initial_array = [1, 2, 9, 10]
+      mapped_array = initial_array.my_map { |n| n * 2 }
+      expect(initial_array).not_to eq(mapped_array)
+    end
   end
 
   describe '#my_inject' do
@@ -194,6 +218,10 @@ describe Enumerable do
         word1.length > word2.length ? word1 : word2
       end
       expect(biggest_word).to eql('Watermelon')
+    end
+
+    it 'always returns the product of the operator independent of the keyword used' do
+      expect(number_array.my_inject { |sum, n| sum * n }).not_to eq(10)
     end
   end
 end

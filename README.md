@@ -21,7 +21,7 @@ To get a local copy up and running follow these simple example steps.
 
 - cd into this Project directory
 
-- rspec spec/enumerable.rb
+- rspec spec/enumerable_tests.rb
 
 ### Prerequisites
 
@@ -58,7 +58,7 @@ ruby enumerable.rb
 Run the following command into your terminal to check the Rspec testing:
 
 ```console
-rspec spec/enumerable.rb
+rspec spec/enumerable_tests.rb
 ```
 
 ## Authors

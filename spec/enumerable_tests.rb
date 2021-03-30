@@ -39,7 +39,7 @@ RSpec.describe Enumerable do
                          end)
     end
 
-    it 'return all elements that are even index' do
+    it 'returns all elements that are even index' do
       expect(number_array.my_each_with_index do |number, index|
                number if index.even?
              end).to eql(number_array.each_with_index do |number, index|
@@ -47,7 +47,7 @@ RSpec.describe Enumerable do
                          end)
     end
 
-    it 'return hash if an index for key is 1' do
+    it 'returns hash if an index for key is 1' do
       expect(hash.my_each_with_index { |hash, index| hash if index == 1 }).to eql(hash.each_with_index do |hash, index|
                                                                                     hash if index == 1
                                                                                   end)
@@ -55,7 +55,7 @@ RSpec.describe Enumerable do
   end
 
   describe '#my_select' do
-    it 'return elements that have 6 letters' do
+    it 'returns elements that have 6 letters' do
       expect(array.my_select { |word| word if word.length == 6 }).to eq(%w[Orange Banana])
     end
 
@@ -77,7 +77,7 @@ RSpec.describe Enumerable do
       expect(true_arr.my_all? { |number| number if number.odd? }).to be true
     end
 
-    it 'return true if the all elements in the array matches the class' do
+    it 'returns true if the all elements in the array matches the class' do
       expect(number_array.my_all?(Numeric)).to eql(true)
     end
 
@@ -111,15 +111,15 @@ RSpec.describe Enumerable do
       expect([1, 'word', false].my_any?(Numeric)).to be true
     end
 
-    it 'return true if any of the elements contain the letter g' do
+    it 'returns true if any of the elements contain the letter g' do
       expect(array.my_any?(/g/)).to eql(true)
     end
 
-    it 'return true if any of the elements matches the parameter' do
+    it 'returns true if any of the elements matches the parameter' do
       expect([true, 'microverse', array].my_any?('microverse')).to be true
     end
 
-    it 'return false if nothing in the array matches with the block' do
+    it 'returns false if nothing in the array matches with the block' do
       expect(number_array.my_any? { |number| number > 5 }).to be false
     end
   end

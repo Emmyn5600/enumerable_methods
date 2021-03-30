@@ -198,7 +198,7 @@ describe Enumerable do
     it 'changes the word small to the word long' do
       animal = ['Small Cat', 'Small Dog', 'Small Bird']
       to_expect = ['Big Cat', 'Big Dog', 'Big Bird']
-      expect(animal.map { |animals| animals.gsub('Small', 'Big') }).to eq(to_expect)
+      expect(animal.my_map { |animals| animals.gsub('Small', 'Big') }).to eq(to_expect)
     end
 
     it 'does not change the initial array' do

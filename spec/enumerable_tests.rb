@@ -1,6 +1,6 @@
 require_relative '../enumerable'
 
-RSpec.describe Enumerable do
+describe Enumerable do
   let(:array) { %w[apple Orange Watermelon Banana] }
   let(:hash) { { fruit: 'banana', phone: 'apple' } }
   let(:number_array) { [1, 2, 3, 4] }
@@ -57,6 +57,10 @@ RSpec.describe Enumerable do
   describe '#my_select' do
     it 'returns elements that have 6 letters' do
       expect(array.my_select { |word| word if word.length == 6 }).to eq(%w[Orange Banana])
+    end
+
+    it 'returns elements if you are trying to find elements that have less or greater than 6 letters' do
+      expect(array.my_select { |word| word if word.length < 6 || word.length > 6 }).to eq(%w[apple Watermelon])
     end
 
     it 'returns all the numbers divisible by 2' do

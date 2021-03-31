@@ -1,6 +1,6 @@
 require_relative '../enumerable'
 
-RSpec.describe Enumerable do
+describe Enumerable do
   let(:array) { %w[apple Orange Watermelon Banana] }
   let(:hash) { { fruit: 'banana', phone: 'apple' } }
   let(:number_array) { [1, 2, 3, 4] }
@@ -28,6 +28,10 @@ RSpec.describe Enumerable do
                            keys if value == 'banana'
                          end)
     end
+
+    it 'does not return a transformed array' do
+      expect(number_array.my_each { |n| n * 2 }).not_to eq([2, 4, 6, 8])
+    end
   end
 
   describe '#my_each_with_index' do
@@ -39,7 +43,7 @@ RSpec.describe Enumerable do
                          end)
     end
 
-    it 'return all elements that are even index' do
+    it 'returns all elements that are even index' do
       expect(number_array.my_each_with_index do |number, index|
                number if index.even?
              end).to eql(number_array.each_with_index do |number, index|
@@ -47,20 +51,34 @@ RSpec.describe Enumerable do
                          end)
     end
 
-    it 'return hash if an index for key is 1' do
+    it 'returns hash if an index for key is 1' do
       expect(hash.my_each_with_index { |hash, index| hash if index == 1 }).to eql(hash.each_with_index do |hash, index|
                                                                                     hash if index == 1
                                                                                   end)
     end
+
+    it 'does not return a transformed array' do
+      expect(number_array.my_each_with_index { |n, index| n * 2 if index.even? }).not_to eq([2, 2, 6, 4])
+    end
   end
 
   describe '#my_select' do
-    it 'return elements that have 6 letters' do
+    it 'returns elements that have 6 letters' do
       expect(array.my_select { |word| word if word.length == 6 }).to eq(%w[Orange Banana])
+    end
+
+    it 'returns elements if you are trying to find elements that have less or greater than 6 letters' do
+      expect(array.my_select { |word| word if word.length < 6 || word.length > 6 }).to eq(%w[apple Watermelon])
     end
 
     it 'returns all the numbers divisible by 2' do
       expect(number_array.my_select { |number| number if number.even? }).to eq([2, 4])
+    end
+
+    it 'does not modify the original array or return the transformed array' do
+      test_array = [2, 4, 6, 8]
+      new_array = test_array.my_select { |n| n * 2 }
+      expect(new_array).to eq(test_array)
     end
   end
 
@@ -77,7 +95,7 @@ RSpec.describe Enumerable do
       expect(true_arr.my_all? { |number| number if number.odd? }).to be true
     end
 
-    it 'return true if the all elements in the array matches the class' do
+    it 'returns true if the all elements in the array matches the class' do
       expect(number_array.my_all?(Numeric)).to eql(true)
     end
 
@@ -111,15 +129,15 @@ RSpec.describe Enumerable do
       expect([1, 'word', false].my_any?(Numeric)).to be true
     end
 
-    it 'return true if any of the elements contain the letter g' do
+    it 'returns true if any of the elements contain the letter g' do
       expect(array.my_any?(/g/)).to eql(true)
     end
 
-    it 'return true if any of the elements matches the parameter' do
+    it 'returns true if any of the elements matches the parameter' do
       expect([true, 'microverse', array].my_any?('microverse')).to be true
     end
 
-    it 'return false if nothing in the array matches with the block' do
+    it 'returns false if nothing in the array matches with the block' do
       expect(number_array.my_any? { |number| number > 5 }).to be false
     end
   end
@@ -162,6 +180,10 @@ RSpec.describe Enumerable do
     it 'returns the counted elements that same as the passing parameters' do
       expect(%w[microverse microverse freecodecamp codeacademy].my_count('microverse')).to eql(2)
     end
+
+    it 'does not return the original array if used without a block' do
+      expect(array.my_count).not_to eq(array)
+    end
   end
 
   describe '#my_map' do
@@ -176,7 +198,13 @@ RSpec.describe Enumerable do
     it 'changes the word small to the word long' do
       animal = ['Small Cat', 'Small Dog', 'Small Bird']
       to_expect = ['Big Cat', 'Big Dog', 'Big Bird']
-      expect(animal.map { |animals| animals.gsub('Small', 'Big') }).to eq(to_expect)
+      expect(animal.my_map { |animals| animals.gsub('Small', 'Big') }).to eq(to_expect)
+    end
+
+    it 'does not change the initial array' do
+      initial_array = [1, 2, 9, 10]
+      mapped_array = initial_array.my_map { |n| n * 2 }
+      expect(initial_array).not_to eq(mapped_array)
     end
   end
 
@@ -190,6 +218,10 @@ RSpec.describe Enumerable do
         word1.length > word2.length ? word1 : word2
       end
       expect(biggest_word).to eql('Watermelon')
+    end
+
+    it 'always returns the product of the operator independent of the keyword used' do
+      expect(number_array.my_inject { |sum, n| sum * n }).not_to eq(10)
     end
   end
 end
